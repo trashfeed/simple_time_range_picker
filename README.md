@@ -39,15 +39,16 @@ RaisedButton(
 
 | name                    | default                   | note                                           |
 | ----------------------- | ------------------------- | ---------------------------------------------- |
-| okLabel                 | `OK`                      | set a label at ok button                       |
-| cancelLabel             | `CANCEL`                  | set a label at cancel button                   |
-| startTime               |                           | set a start time                               |
-| endTime                 |                           | set a end time                                 |
-| headerDefaultStartLabel | `START`                   | set a label start time on header when empty    |
-| headerDefaultEndLabel   | `END`                     | set a label end time on header when empty      |
-| autoAdjust              | `true`                    | adjust if the start time is after the end time |
-| timeRangeViewType       | `TimeRangeViewType.start` | first view at startor end time                 |
-| onStartTimeChange       |                           | callback for changed start time                |
-| onEndTimeChange         |                           | callback for changed end time                  |
+| okLabel                 | `OK`                      | set a label at `ok` button                       |
+| cancelLabel             | `CANCEL`                  | set a label at `cancel` button                   |
+| startTime               |                           | set a `start` time                               |
+| endTime                 |                           | set a `end` time                                 |
+| headerDefaultStartLabel | `START`                   | set a label `start` time on header when empty    |
+| headerDefaultEndLabel   | `END`                     | set a label `end` time on header when empty      |
+| autoAdjust              | `true`                    | adjust if the `start` time is after the `end` time |
+| unSelectedEmpty         | `true`                    | returns null when not selected |
+| timeRangeViewType       | `TimeRangeViewType.start` | first view at `start` or `end` time                 |
+| onStartTimeChange       |                           | callback for changed `start` time                |
+| onEndTimeChange         |                           | callback for changed `end` time                  |
 | onSubmitted             |                           | callback for submitted                         |
 | onCancel                |                           | callback for canceled                          |

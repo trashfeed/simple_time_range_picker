@@ -17,6 +17,7 @@ class TimeRangePicker {
     String headerDefaultStartLabel,
     String headerDefaultEndLabel,
     bool autoAdjust,
+    bool unSelectedEmpty,
     TimeOfDay startTime,
     TimeOfDay endTime,
     TimeRangeViewType timeRangeViewType,
@@ -31,6 +32,7 @@ class TimeRangePicker {
         return _TimeRangeDialog(
             okLabel: okLabel ?? 'OK',
             cancelLabel: cancelLabel ?? 'CANCEL',
+            unSelectedEmpty: unSelectedEmpty ?? false,
             headerDefaultStartLabel: headerDefaultStartLabel ?? 'START',
             headerDefaultEndLabel: headerDefaultEndLabel ?? 'END',
             autoAdjust: autoAdjust ?? true,
@@ -53,6 +55,7 @@ class _TimeRangeDialog extends StatefulWidget {
   final ValueChanged<TimeOfDay> onStartTimeChange;
   final ValueChanged<TimeOfDay> onEndTimeChange;
   final bool autoAdjust;
+  final bool unSelectedEmpty;
   final TimeOfDay startTime;
   final TimeOfDay endTime;
   final TimeRangeViewType timeRangeViewType;
@@ -67,7 +70,8 @@ class _TimeRangeDialog extends StatefulWidget {
       this.headerDefaultStartLabel,
       this.headerDefaultEndLabel,
       this.timeRangeViewType = TimeRangeViewType.start,
-      this.autoAdjust = true,
+      this.autoAdjust,
+      this.unSelectedEmpty,
       this.onStartTimeChange,
       this.onEndTimeChange,
       this.onSubmitted,
@@ -84,6 +88,8 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
   TabController _tabController;
   TimeOfDay _startTime;
   TimeOfDay _endTime;
+  TimeOfDay _startDefaultTime;
+  TimeOfDay _endDefaultTime;
   Orientation _orientation;
   final double _kTimePickerWidthPortrait = 328.0;
   final double _kTimePickerWidthLandscape = 528.0;
@@ -100,6 +106,10 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
             widget.timeRangeViewType == TimeRangeViewType.start ? 0 : 1);
     _startTime = widget.startTime;
     _endTime = widget.endTime;
+    _startDefaultTime =
+        _startTime ?? (widget.unSelectedEmpty ? null : TimeOfDay.now());
+    _endDefaultTime =
+        _endTime ?? (widget.unSelectedEmpty ? null : TimeOfDay.now());
   }
 
   @override
@@ -210,7 +220,9 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
             confirmText: widget.okLabel,
             onTimeChange: onTimeChange,
             onSubmitted: (value) => widget.onSubmitted?.call(
-                TimeRangeValue.value(startTime: _startTime, endTime: _endTime)),
+                TimeRangeValue.value(
+                    startTime: _startTime ?? _startDefaultTime,
+                    endTime: _endTime ?? _endDefaultTime)),
             onCancel: widget.onCancel,
           )
         ],
