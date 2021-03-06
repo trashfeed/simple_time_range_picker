@@ -46,6 +46,9 @@ class _MyAppState extends State<MyApp> {
                     child: Text("OpenPicker"),
                     onPressed: () => TimeRangePicker.show(
                       context: context,
+                      unSelectedEmpty: false,
+                      startTime: TimeOfDay(hour: 19, minute: 45),
+                      endTime: TimeOfDay(hour: 21, minute: 22),
                       onSubmitted: (TimeRangeValue value) {
                         setState(() {
                           _startTime = value.startTime;
