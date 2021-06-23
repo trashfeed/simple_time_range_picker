@@ -5,26 +5,26 @@ enum TimeRangeViewType { start, end }
 
 class TimeRangeValue {
   TimeRangeValue.value({this.startTime, this.endTime});
-  TimeOfDay startTime;
-  TimeOfDay endTime;
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
 }
 
 class TimeRangePicker {
   TimeRangePicker.show({
-    @required BuildContext context,
-    String okLabel,
-    String cancelLabel,
-    String headerDefaultStartLabel,
-    String headerDefaultEndLabel,
-    bool autoAdjust,
-    bool unSelectedEmpty,
-    TimeOfDay startTime,
-    TimeOfDay endTime,
-    TimeRangeViewType timeRangeViewType,
-    ValueChanged<TimeOfDay> onStartTimeChange,
-    ValueChanged<TimeOfDay> onEndTimeChange,
-    ValueChanged<TimeRangeValue> onSubmitted,
-    VoidCallback onCancel,
+    required BuildContext context,
+    String? okLabel,
+    String? cancelLabel,
+    String? headerDefaultStartLabel,
+    String? headerDefaultEndLabel,
+    bool? autoAdjust,
+    bool? unSelectedEmpty,
+    TimeOfDay? startTime,
+    TimeOfDay? endTime,
+    TimeRangeViewType? timeRangeViewType,
+    ValueChanged<TimeOfDay>? onStartTimeChange,
+    ValueChanged<TimeOfDay>? onEndTimeChange,
+    required ValueChanged<TimeRangeValue> onSubmitted,
+    VoidCallback? onCancel,
   }) {
     showDialog(
       context: context,
@@ -52,26 +52,26 @@ class _TimeRangeDialog extends StatefulWidget {
   final String cancelLabel;
   final String headerDefaultStartLabel;
   final String headerDefaultEndLabel;
-  final ValueChanged<TimeOfDay> onStartTimeChange;
-  final ValueChanged<TimeOfDay> onEndTimeChange;
+  final ValueChanged<TimeOfDay>? onStartTimeChange;
+  final ValueChanged<TimeOfDay>? onEndTimeChange;
   final bool autoAdjust;
   final bool unSelectedEmpty;
-  final TimeOfDay startTime;
-  final TimeOfDay endTime;
+  final TimeOfDay? startTime;
+  final TimeOfDay? endTime;
   final TimeRangeViewType timeRangeViewType;
-  final ValueChanged<TimeRangeValue> onSubmitted;
-  final VoidCallback onCancel;
+  final ValueChanged<TimeRangeValue>? onSubmitted;
+  final VoidCallback? onCancel;
 
   _TimeRangeDialog(
-      {this.okLabel,
-      this.cancelLabel,
+      {required this.okLabel,
+      required this.cancelLabel,
       this.startTime,
       this.endTime,
-      this.headerDefaultStartLabel,
-      this.headerDefaultEndLabel,
+      required this.headerDefaultStartLabel,
+      required this.headerDefaultEndLabel,
       this.timeRangeViewType = TimeRangeViewType.start,
-      this.autoAdjust,
-      this.unSelectedEmpty,
+      required this.autoAdjust,
+      required this.unSelectedEmpty,
       this.onStartTimeChange,
       this.onEndTimeChange,
       this.onSubmitted,
@@ -85,12 +85,12 @@ class _TimeRangeDialog extends StatefulWidget {
 
 class _TimeRangeDialogState extends State<_TimeRangeDialog>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
-  TimeOfDay _startTime;
-  TimeOfDay _endTime;
-  TimeOfDay _startDefaultTime;
-  TimeOfDay _endDefaultTime;
-  Orientation _orientation;
+  late TabController _tabController;
+  TimeOfDay? _startTime;
+  TimeOfDay? _endTime;
+  TimeOfDay? _startDefaultTime;
+  TimeOfDay? _endDefaultTime;
+  Orientation? _orientation;
   final double _kTimePickerWidthPortrait = 328.0;
   final double _kTimePickerWidthLandscape = 528.0;
   final double _kTimePickerHeightPortrait = 434.0;
@@ -104,8 +104,8 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
         length: 2,
         initialIndex:
             widget.timeRangeViewType == TimeRangeViewType.start ? 0 : 1);
-    _startTime = widget.startTime;
-    _endTime = widget.endTime;
+    _startTime = widget.startTime!;
+    _endTime = widget.endTime!;
     _startDefaultTime =
         _startTime ?? (widget.unSelectedEmpty ? null : TimeOfDay.now());
     _endDefaultTime =
@@ -132,14 +132,14 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
               : _kTimePickerHeightLandscape,
           child: Scaffold(
             appBar: TabBar(
-                labelColor: Theme.of(context).textTheme.bodyText1.color,
+                labelColor: Theme.of(context).textTheme.bodyText1!.color,
                 controller: _tabController,
                 tabs: [
                   Tab(
-                      text: _formatTime(_startTime) ??
+                      text: _formatTime(_startTime!) ??
                           widget.headerDefaultStartLabel),
                   Tab(
-                      text: _formatTime(_endTime) ??
+                      text: _formatTime(_endTime!) ??
                           widget.headerDefaultEndLabel),
                 ]),
             body: TabBarView(
@@ -151,7 +151,7 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
         ));
   }
 
-  String _formatTime(TimeOfDay time) {
+  String? _formatTime(TimeOfDay time) {
     if (time == null) return null;
     final bool alwaysUse24HourFormat =
         MediaQuery.of(context).alwaysUse24HourFormat;
@@ -163,7 +163,7 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
     );
   }
 
-  _updateTime({TimeOfDay startTime, TimeOfDay endTime}) {
+  _updateTime({TimeOfDay? startTime, TimeOfDay? endTime}) {
     _autoAdjustTime(startTime: startTime, endTime: endTime);
     setState(() {
       if (startTime != null) _startTime = startTime;
@@ -171,17 +171,17 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
     });
   }
 
-  _autoAdjustTime({TimeOfDay startTime, TimeOfDay endTime}) {
+  _autoAdjustTime({TimeOfDay? startTime, TimeOfDay? endTime}) {
     if (!widget.autoAdjust) return;
     if (startTime != null) {
       _startTime = startTime;
-      if (_timeToDouble(startTime) > _timeToDouble(_endTime)) {
+      if (_timeToDouble(startTime) > _timeToDouble(_endTime!)) {
         _endTime = _endTime?.replacing(hour: startTime.hour + 1);
       }
     }
     if (endTime != null) {
       _endTime = endTime;
-      if (_timeToDouble(_startTime) > _timeToDouble(endTime)) {
+      if (_timeToDouble(_startTime!) > _timeToDouble(endTime)) {
         _startTime = _startTime?.replacing(hour: endTime.hour - 1);
       }
     }
@@ -197,20 +197,20 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
   }
 
   Widget _startTimePicker() {
-    return _picker(_startTime, (value) {
+    return _picker(_startTime!, (value) {
       _updateTime(startTime: value);
       widget.onStartTimeChange?.call(value);
     });
   }
 
   Widget _endTimePicker() {
-    return _picker(_endTime, (value) {
+    return _picker(_endTime!, (value) {
       _updateTime(endTime: value);
       widget.onEndTimeChange?.call(value);
     });
   }
 
-  Widget _picker(TimeOfDay initialTime, ValueChanged<TimeOfDay> onTimeChange) {
+  Widget _picker(TimeOfDay? initialTime, ValueChanged<TimeOfDay> onTimeChange) {
     return SingleChildScrollView(
       child: Column(
         children: [

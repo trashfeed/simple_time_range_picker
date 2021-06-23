@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
                   // Example start
                   // -------------
                   //
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text("OpenPicker"),
                     onPressed: () => TimeRangePicker.show(
                       context: context,
