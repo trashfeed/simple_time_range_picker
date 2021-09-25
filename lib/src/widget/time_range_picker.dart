@@ -104,8 +104,8 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
         length: 2,
         initialIndex:
             widget.timeRangeViewType == TimeRangeViewType.start ? 0 : 1);
-    _startTime = widget.startTime!;
-    _endTime = widget.endTime!;
+    _startTime = widget.startTime ?? null;
+    _endTime = widget.endTime ?? null;
     _startDefaultTime =
         _startTime ?? (widget.unSelectedEmpty ? null : TimeOfDay.now());
     _endDefaultTime =
@@ -136,10 +136,10 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
                 controller: _tabController,
                 tabs: [
                   Tab(
-                      text: _formatTime(_startTime!) ??
+                      text: _formatTime(_startTime) ??
                           widget.headerDefaultStartLabel),
                   Tab(
-                      text: _formatTime(_endTime!) ??
+                      text: _formatTime(_endTime) ??
                           widget.headerDefaultEndLabel),
                 ]),
             body: TabBarView(
@@ -151,7 +151,7 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
         ));
   }
 
-  String? _formatTime(TimeOfDay time) {
+  String? _formatTime(TimeOfDay? time) {
     if (time == null) return null;
     final bool alwaysUse24HourFormat =
         MediaQuery.of(context).alwaysUse24HourFormat;
@@ -175,14 +175,14 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
     if (!widget.autoAdjust) return;
     if (startTime != null) {
       _startTime = startTime;
-      if (_timeToDouble(startTime) > _timeToDouble(_endTime!)) {
-        _endTime = _endTime?.replacing(hour: startTime.hour + 1);
+      if (_timeToDouble(startTime) > _timeToDouble(_endTime)) {
+        _endTime = _endTime?.replacing(hour: startTime.hour);
       }
     }
     if (endTime != null) {
       _endTime = endTime;
-      if (_timeToDouble(_startTime!) > _timeToDouble(endTime)) {
-        _startTime = _startTime?.replacing(hour: endTime.hour - 1);
+      if (_timeToDouble(_startTime) > _timeToDouble(endTime)) {
+        _startTime = _startTime?.replacing(hour: endTime.hour);
       }
     }
     setState(() {
@@ -191,20 +191,20 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
     });
   }
 
-  double _timeToDouble(TimeOfDay time) {
+  double _timeToDouble(TimeOfDay? time) {
     if (time == null) return 0;
     return time.hour + time.minute / 60.0;
   }
 
   Widget _startTimePicker() {
-    return _picker(_startTime!, (value) {
+    return _picker(_startTime, (value) {
       _updateTime(startTime: value);
       widget.onStartTimeChange?.call(value);
     });
   }
 
   Widget _endTimePicker() {
-    return _picker(_endTime!, (value) {
+    return _picker(_endTime, (value) {
       _updateTime(endTime: value);
       widget.onEndTimeChange?.call(value);
     });

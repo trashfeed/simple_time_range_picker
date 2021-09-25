@@ -1,3 +1,7 @@
+## [0.0.3] 2021-09-25.
+
+- Support Null Safety
+
 ## [0.0.2] 2021-03-06.
 
 - Added api [unSelectedEmpty]. when not selected time, return null  or now time.
