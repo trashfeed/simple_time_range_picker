@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-
+// ignore_for_file: deprecated_member_use
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -64,11 +64,7 @@ class _TimePickerFragmentContext {
     required this.onTimeChange,
     required this.onModeChange,
     required this.use24HourDials,
-  })  : assert(selectedTime != null),
-        assert(mode != null),
-        assert(onTimeChange != null),
-        assert(onModeChange != null),
-        assert(use24HourDials != null);
+  });
 
   final TimeOfDay selectedTime;
   final _TimePickerMode mode;
@@ -86,11 +82,7 @@ class _TimePickerHeader extends StatelessWidget {
       required this.onChanged,
       required this.use24HourDials
       // @required this.helpText,
-      })
-      : assert(selectedTime != null),
-        assert(mode != null),
-        assert(orientation != null),
-        assert(use24HourDials != null);
+      });
 
   final TimeOfDay selectedTime;
   final _TimePickerMode mode;
@@ -233,9 +225,7 @@ class _HourMinuteControl extends StatelessWidget {
     required this.text,
     required this.onTap,
     required this.isSelected,
-  })  : assert(text != null),
-        assert(onTap != null),
-        assert(isSelected != null);
+  });
 
   final String text;
   final GestureTapCallback onTap;
@@ -379,7 +369,6 @@ class _StringFragment extends StatelessWidget {
       case TimeOfDayFormat.frenchCanadian:
         return 'h';
     }
-    return '';
   }
 
   @override
@@ -908,9 +897,7 @@ class _Dial extends StatefulWidget {
     required this.use24HourDials,
     required this.onChanged,
     required this.onHourSelected,
-  })  : assert(selectedTime != null),
-        assert(mode != null),
-        assert(use24HourDials != null);
+  });
 
   final TimeOfDay selectedTime;
   final _TimePickerMode mode;
@@ -1024,7 +1011,6 @@ class _DialState extends State<_Dial> with SingleTickerProviderStateMixin {
   TimeOfDay _notifyOnChangedIfNeeded({bool roundMinutes = false}) {
     final TimeOfDay current =
         _getTimeForTheta(_theta.value, roundMinutes: roundMinutes);
-    if (widget.onChanged == null) return current;
     if (current != widget.selectedTime) widget.onChanged(current);
     return current;
   }
@@ -1089,9 +1075,6 @@ class _DialState extends State<_Dial> with SingleTickerProviderStateMixin {
       } else {
         _announceToAccessibility(
             context, localizations.formatDecimal(newTime.hourOfPeriod));
-      }
-      if (widget.onHourSelected != null) {
-        widget.onHourSelected();
       }
     } else {
       _announceToAccessibility(
@@ -1310,9 +1293,7 @@ class _TimePickerInput extends StatefulWidget {
     required this.initialSelectedTime,
     // @required this.helpText,
     required this.onChanged,
-  })  : assert(initialSelectedTime != null),
-        assert(onChanged != null),
-        super(key: key);
+  })   : super(key: key);
 
   /// The time initially selected when the dialog is shown.
   final TimeOfDay initialSelectedTime;
@@ -1338,10 +1319,6 @@ class _TimePickerInputState extends State<_TimePickerInput> {
   }
 
   int? _parseHour(String value) {
-    if (value == null) {
-      return null;
-    }
-
     int? newHour = int.tryParse(value);
     if (newHour == null) {
       return null;
@@ -1365,10 +1342,6 @@ class _TimePickerInputState extends State<_TimePickerInput> {
   }
 
   int? _parseMinute(String value) {
-    if (value == null) {
-      return null;
-    }
-
     final int? newMinute = int.tryParse(value);
     if (newMinute == null) {
       return null;
@@ -1621,7 +1594,8 @@ class _HourMinuteTextFieldState extends State<_HourMinuteTextField> {
       inputDecoration = InputDecoration(
         contentPadding: EdgeInsets.zero,
         filled: true,
-        fillColor: focusNode!.hasFocus ? Colors.transparent : unfocusedFillColor,
+        fillColor:
+            focusNode!.hasFocus ? Colors.transparent : unfocusedFillColor,
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.transparent),
         ),
@@ -1690,8 +1664,7 @@ class TimeSinglePicker extends StatefulWidget {
     required this.onSubmitted,
     required this.onCancel,
     this.initialEntryMode = TimePickerEntryMode.dial,
-  })  : assert(initialTime != null),
-        super(key: key);
+  }) : super(key: key);
 
   /// The time initially selected when the dialog is shown.
   final TimeOfDay initialTime;

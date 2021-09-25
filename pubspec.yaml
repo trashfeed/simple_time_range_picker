@@ -1,11 +1,11 @@
 name: simple_time_range_picker
 description: A simple time range picker for flutter
-version: 0.0.2
+version: 0.0.3
 repository: https://github.com/trashfeed/simple_time_range_picker
 issue_tracker: https://github.com/trashfeed/simple_time_range_picker/issues
 environment:
   sdk: '>=2.12.0 <3.0.0'
-  flutter: ">=1.17.0 <2.0.0"
+  flutter: ">=1.17.0"
 
 dependencies:
   flutter:

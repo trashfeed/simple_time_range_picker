@@ -13,8 +13,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  TimeOfDay _startTime;
-  TimeOfDay _endTime;
+  TimeOfDay _startTime = TimeOfDay.now();
+  TimeOfDay _endTime = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +46,11 @@ class _MyAppState extends State<MyApp> {
                     child: Text("OpenPicker"),
                     onPressed: () => TimeRangePicker.show(
                       context: context,
-                      unSelectedEmpty: false,
-                      startTime: TimeOfDay(hour: 19, minute: 45),
-                      endTime: TimeOfDay(hour: 21, minute: 22),
+                      unSelectedEmpty: true,
+                      startTime: TimeOfDay(
+                          hour: _startTime.hour, minute: _startTime.minute),
+                      endTime: TimeOfDay(
+                          hour: _endTime.hour, minute: _endTime.minute),
                       onSubmitted: (TimeRangeValue value) {
                         setState(() {
                           _startTime = value.startTime;
