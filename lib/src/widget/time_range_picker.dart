@@ -36,6 +36,7 @@ class TimeRangePicker {
             headerDefaultStartLabel: headerDefaultStartLabel ?? 'START',
             headerDefaultEndLabel: headerDefaultEndLabel ?? 'END',
             autoAdjust: autoAdjust ?? true,
+            timeRangeViewType: timeRangeViewType ?? TimeRangeViewType.start,
             onStartTimeChange: onStartTimeChange,
             onEndTimeChange: onEndTimeChange,
             startTime: startTime,
