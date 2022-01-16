@@ -213,7 +213,6 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
       widget.onEndTimeChange?.call(value);
     });
   }
-
   Widget _picker(TimeOfDay? initialTime, ValueChanged<TimeOfDay> onTimeChange) {
     return SingleChildScrollView(
       child: Column(
