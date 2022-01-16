@@ -125,34 +125,35 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
     _orientation = MediaQuery.of(context).orientation;
     return AlertDialog(
         contentPadding: EdgeInsets.all(0),
-        content: Container(
-          width: _orientation == Orientation.portrait
-              ? _kTimePickerWidthPortrait
-              : _kTimePickerWidthLandscape,
-          height: _orientation == Orientation.portrait
-              ? _kTimePickerHeightPortrait
-              : kIsWeb
-                  ? _kTimePickerHeightPortrait
-                  : _kTimePickerHeightLandscape,
-          child: Scaffold(
-            appBar: TabBar(
-                labelColor: Theme.of(context).textTheme.bodyText1!.color,
-                controller: _tabController,
-                tabs: [
-                  Tab(
-                      text: _formatTime(_startTime) ??
-                          widget.headerDefaultStartLabel),
-                  Tab(
-                      text: _formatTime(_endTime) ??
-                          widget.headerDefaultEndLabel),
-                ]),
-            body: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
-              controller: _tabController,
-              children: [_startTimePicker(), _endTimePicker()],
-            ),
-          ),
-        ));
+        content: Column(mainAxisSize: MainAxisSize.min,
+            // width: _orientation == Orientation.portrait
+            //     ? _kTimePickerWidthPortrait
+            //     : _kTimePickerWidthLandscape,
+            // height: _orientation == Orientation.portrait
+            //     ? _kTimePickerHeightPortrait
+            //     : kIsWeb
+            //         ? _kTimePickerHeightPortrait
+            //         : _kTimePickerHeightLandscape,
+            children: [
+              Scaffold(
+                appBar: TabBar(
+                    labelColor: Theme.of(context).textTheme.bodyText1!.color,
+                    controller: _tabController,
+                    tabs: [
+                      Tab(
+                          text: _formatTime(_startTime) ??
+                              widget.headerDefaultStartLabel),
+                      Tab(
+                          text: _formatTime(_endTime) ??
+                              widget.headerDefaultEndLabel),
+                    ]),
+                body: TabBarView(
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _tabController,
+                  children: [_startTimePicker(), _endTimePicker()],
+                ),
+              ),
+            ]));
   }
 
   String? _formatTime(TimeOfDay? time) {
@@ -213,6 +214,7 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
       widget.onEndTimeChange?.call(value);
     });
   }
+
   Widget _picker(TimeOfDay? initialTime, ValueChanged<TimeOfDay> onTimeChange) {
     return SingleChildScrollView(
       child: Column(
