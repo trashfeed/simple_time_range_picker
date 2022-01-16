@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_time_range_picker/src/widget/time_single_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 enum TimeRangeViewType { start, end }
 
@@ -130,7 +131,9 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
               : _kTimePickerWidthLandscape,
           height: _orientation == Orientation.portrait
               ? _kTimePickerHeightPortrait
-              : _kTimePickerHeightLandscape,
+              : kIsWeb
+                  ? _kTimePickerHeightPortrait
+                  : _kTimePickerHeightLandscape,
           child: Scaffold(
             appBar: TabBar(
                 labelColor: Theme.of(context).textTheme.bodyText1!.color,
