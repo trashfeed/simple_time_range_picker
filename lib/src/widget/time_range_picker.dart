@@ -96,7 +96,7 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
   final double _kTimePickerWidthPortrait = 328.0;
   final double _kTimePickerWidthLandscape = 528.0;
   final double _kTimePickerHeightPortrait = 434.0;
-  final double _kTimePickerHeightLandscape = 316.0;
+  final double _kTimePickerHeightLandscape = kIsWeb?350:316.0;
 
   @override
   void initState() {
@@ -125,35 +125,32 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
     _orientation = MediaQuery.of(context).orientation;
     return AlertDialog(
         contentPadding: EdgeInsets.all(0),
-        content: Column(mainAxisSize: MainAxisSize.min,
-            // width: _orientation == Orientation.portrait
-            //     ? _kTimePickerWidthPortrait
-            //     : _kTimePickerWidthLandscape,
-            // height: _orientation == Orientation.portrait
-            //     ? _kTimePickerHeightPortrait
-            //     : kIsWeb
-            //         ? _kTimePickerHeightPortrait
-            //         : _kTimePickerHeightLandscape,
-            children: [
-              Scaffold(
-                appBar: TabBar(
-                    labelColor: Theme.of(context).textTheme.bodyText1!.color,
-                    controller: _tabController,
-                    tabs: [
-                      Tab(
-                          text: _formatTime(_startTime) ??
-                              widget.headerDefaultStartLabel),
-                      Tab(
-                          text: _formatTime(_endTime) ??
-                              widget.headerDefaultEndLabel),
-                    ]),
-                body: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: _tabController,
-                  children: [_startTimePicker(), _endTimePicker()],
-                ),
-              ),
-            ]));
+        content: Container(
+          width: _orientation == Orientation.portrait
+              ? _kTimePickerWidthPortrait
+              : _kTimePickerWidthLandscape,
+          height: _orientation == Orientation.portrait
+              ? _kTimePickerHeightPortrait
+              : _kTimePickerHeightLandscape,
+          child: Scaffold(
+            appBar: TabBar(
+                labelColor: Theme.of(context).textTheme.bodyText1!.color,
+                controller: _tabController,
+                tabs: [
+                  Tab(
+                      text: _formatTime(_startTime) ??
+                          widget.headerDefaultStartLabel),
+                  Tab(
+                      text: _formatTime(_endTime) ??
+                          widget.headerDefaultEndLabel),
+                ]),
+            body: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _tabController,
+              children: [_startTimePicker(), _endTimePicker()],
+            ),
+          ),
+        ));
   }
 
   String? _formatTime(TimeOfDay? time) {
