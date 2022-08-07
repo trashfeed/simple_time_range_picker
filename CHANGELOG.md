@@ -1,3 +1,8 @@
+## [0.0.5] 08/07/2022.
+- supported Flutter version to `2.10.5`
+- https://github.com/trashfeed/simple_time_range_picker/pull/12
+- https://github.com/trashfeed/simple_time_range_picker/pull/11
+
 ## [0.0.4] 11/03/2021.
 
 - Fixed TimeRangeViewType parameter.
