@@ -21,6 +21,7 @@ class TimeRangePicker {
     bool? unSelectedEmpty,
     TimeOfDay? startTime,
     TimeOfDay? endTime,
+    double? borderRadius,
     TimeRangeViewType? timeRangeViewType,
     ValueChanged<TimeOfDay>? onStartTimeChange,
     ValueChanged<TimeOfDay>? onEndTimeChange,
@@ -37,6 +38,7 @@ class TimeRangePicker {
             headerDefaultStartLabel: headerDefaultStartLabel ?? 'START',
             headerDefaultEndLabel: headerDefaultEndLabel ?? 'END',
             autoAdjust: autoAdjust ?? true,
+            borderRadius: borderRadius ?? 4,
             timeRangeViewType: timeRangeViewType ?? TimeRangeViewType.start,
             onStartTimeChange: onStartTimeChange,
             onEndTimeChange: onEndTimeChange,
@@ -57,6 +59,7 @@ class _TimeRangeDialog extends StatefulWidget {
   final ValueChanged<TimeOfDay>? onStartTimeChange;
   final ValueChanged<TimeOfDay>? onEndTimeChange;
   final bool autoAdjust;
+  final double borderRadius;
   final bool unSelectedEmpty;
   final TimeOfDay? startTime;
   final TimeOfDay? endTime;
@@ -69,6 +72,7 @@ class _TimeRangeDialog extends StatefulWidget {
       required this.cancelLabel,
       this.startTime,
       this.endTime,
+      required this.borderRadius,
       required this.headerDefaultStartLabel,
       required this.headerDefaultEndLabel,
       this.timeRangeViewType = TimeRangeViewType.start,
@@ -124,7 +128,9 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
   Widget build(BuildContext context) {
     _orientation = MediaQuery.of(context).orientation;
     return AlertDialog(
-        contentPadding: EdgeInsets.all(0),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(widget.borderRadius)),
+        contentPadding: EdgeInsets.all(8),
         content: Container(
           width: _orientation == Orientation.portrait
               ? _kTimePickerWidthPortrait
@@ -138,16 +144,53 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
                 controller: _tabController,
                 tabs: [
                   Tab(
-                      text: _formatTime(_startTime) ??
-                          widget.headerDefaultStartLabel),
+                    child: Column(children: [
+                      SizedBox(height: 4),
+                      Text(
+                        widget.headerDefaultStartLabel,
+                        softWrap: false,
+                        overflow: TextOverflow.fade,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      if (_formatTime(_startTime) != null) ...[
+                        SizedBox(height: 2),
+                        Text(
+                          _formatTime(_startTime) ?? "",
+                          softWrap: false,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ]
+                    ]),
+                  ),
                   Tab(
-                      text: _formatTime(_endTime) ??
-                          widget.headerDefaultEndLabel),
+                    child: Column(children: [
+                      SizedBox(height: 4),
+                      Text(
+                        widget.headerDefaultEndLabel,
+                        softWrap: false,
+                        overflow: TextOverflow.fade,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      if (_formatTime(_endTime) != null) ...[
+                        SizedBox(height: 2),
+                        Text(
+                          _formatTime(_endTime) ?? "",
+                          softWrap: false,
+                          overflow: TextOverflow.fade,
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ]
+                    ]),
+                  ),
                 ]),
             body: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               controller: _tabController,
-              children: [_startTimePicker(), _endTimePicker()],
+              children: [
+                _startTimePicker(),
+                _endTimePicker(),
+              ],
             ),
           ),
         ));
@@ -213,21 +256,24 @@ class _TimeRangeDialogState extends State<_TimeRangeDialog>
   }
 
   Widget _picker(TimeOfDay? initialTime, ValueChanged<TimeOfDay> onTimeChange) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          TimeSinglePicker(
-            initialTime: initialTime ?? TimeOfDay.now(),
-            cancelText: widget.cancelLabel,
-            confirmText: widget.okLabel,
-            onTimeChange: onTimeChange,
-            onSubmitted: (value) => widget.onSubmitted?.call(
-                TimeRangeValue.value(
-                    startTime: _startTime ?? _startDefaultTime,
-                    endTime: _endTime ?? _endDefaultTime)),
-            onCancel: widget.onCancel,
-          )
-        ],
+    return Material(
+      color: Colors.white,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            TimeSinglePicker(
+              initialTime: initialTime ?? TimeOfDay.now(),
+              cancelText: widget.cancelLabel,
+              confirmText: widget.okLabel,
+              onTimeChange: onTimeChange,
+              onSubmitted: (value) => widget.onSubmitted?.call(
+                  TimeRangeValue.value(
+                      startTime: _startTime ?? _startDefaultTime,
+                      endTime: _endTime ?? _endDefaultTime)),
+              onCancel: widget.onCancel,
+            )
+          ],
+        ),
       ),
     );
   }
