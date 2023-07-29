@@ -24,9 +24,9 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      builder: (context, child) => MediaQuery(
+      builder: (context, Widget? child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child),
+          child: child ?? SizedBox.shrink()),
       home: Builder(
         builder: (BuildContext context) {
           return Scaffold(
@@ -52,18 +52,20 @@ class _MyAppState extends State<MyApp> {
                       endTime: TimeOfDay(
                           hour: _endTime.hour, minute: _endTime.minute),
                       onSubmitted: (TimeRangeValue value) {
-                        setState(() {
-                          _startTime = value.startTime;
-                          _endTime = value.endTime;
-                        });
+                        if (value.startTime != null && value.endTime != null) {
+                          setState(() {
+                            _startTime = value.startTime!;
+                            _endTime = value.endTime!;
+                          });
+                        }
                       },
                     ),
                   ),
                   Text(
-                    "start: ${_timeFormated(_startTime)}",
+                    "start: ${_timeFormatted(_startTime)}",
                   ),
                   Text(
-                    "end: ${_timeFormated(_endTime)}",
+                    "end: ${_timeFormatted(_endTime)}",
                   ),
                   //
                   // -------------
@@ -78,7 +80,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  String _timeFormated(TimeOfDay time) {
+  String _timeFormatted(TimeOfDay? time) {
     if (time == null) return "--:--";
     return "${time.hour}:${time.minute}";
   }
