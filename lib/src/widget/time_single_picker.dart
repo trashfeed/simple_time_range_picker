@@ -248,7 +248,8 @@ class _HourMinuteControl extends StatelessWidget {
               : themeData.colorScheme.onSurface.withOpacity(0.12);
         });
     final TextStyle style =
-        timePickerTheme.hourMinuteTextStyle ?? themeData.textTheme.headline2!;
+        timePickerTheme.hourMinuteTextStyle ??
+        themeData.textTheme.displayMedium!;
     final ShapeBorder shape = timePickerTheme.hourMinuteShape ?? _kDefaultShape;
 
     final Set<MaterialState> states = isSelected
@@ -375,7 +376,7 @@ class _StringFragment extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final TimePickerThemeData timePickerTheme = TimePickerTheme.of(context);
     final TextStyle hourMinuteStyle =
-        timePickerTheme.hourMinuteTextStyle ?? theme.textTheme.headline2!;
+        timePickerTheme.hourMinuteTextStyle ?? theme.textTheme.displayMedium!;
     final Color textColor =
         timePickerTheme.hourMinuteTextColor ?? theme.colorScheme.onSurface;
 
@@ -537,7 +538,7 @@ class _DayPeriodControl extends StatelessWidget {
         ? <MaterialState>{MaterialState.selected}
         : <MaterialState>{};
     final TextStyle textStyle = timePickerTheme.dayPeriodTextStyle ??
-        Theme.of(context).textTheme.subtitle1!;
+        Theme.of(context).textTheme.titleMedium!;
     final TextStyle amStyle = textStyle.copyWith(
       color: MaterialStateProperty.resolveAs(textColor, amStates),
     );
@@ -808,7 +809,7 @@ class _DialPainter extends CustomPainter {
     required this.theta,
     required this.textDirection,
     required this.selectedValue,
-  }) : super(repaint: PaintingBinding.instance!.systemFonts);
+  }) : super(repaint: PaintingBinding.instance.systemFonts);
 
   final List<_TappableLabel>? primaryLabels;
   final List<_TappableLabel>? secondaryLabels;
@@ -1152,7 +1153,7 @@ class _DialState extends State<_Dial> with SingleTickerProviderStateMixin {
 
   _TappableLabel _buildTappableLabel(TextTheme textTheme, Color? color,
       int value, String label, VoidCallback onTap) {
-    final TextStyle style = textTheme.subtitle1!.copyWith(color: color);
+    final TextStyle style = textTheme.titleMedium!.copyWith(color: color);
     final double labelScaleFactor =
         math.min(MediaQuery.of(context).textScaleFactor, 2.0);
     return _TappableLabel(
@@ -1247,19 +1248,19 @@ class _DialState extends State<_Dial> with SingleTickerProviderStateMixin {
           selectedDialValue = widget.selectedTime.hour;
           primaryLabels = _build24HourRing(theme.textTheme, primaryLabelColor);
           secondaryLabels =
-              _build24HourRing(theme.accentTextTheme, secondaryLabelColor);
+              _build24HourRing(theme.textTheme, secondaryLabelColor);
         } else {
           selectedDialValue = widget.selectedTime.hourOfPeriod;
           primaryLabels = _build12HourRing(theme.textTheme, primaryLabelColor);
           secondaryLabels =
-              _build12HourRing(theme.accentTextTheme, secondaryLabelColor);
+              _build12HourRing(theme.textTheme, secondaryLabelColor);
         }
         break;
       case _TimePickerMode.minute:
         selectedDialValue = widget.selectedTime.minute;
         primaryLabels = _buildMinutes(theme.textTheme, primaryLabelColor);
         secondaryLabels =
-            _buildMinutes(theme.accentTextTheme, secondaryLabelColor);
+            _buildMinutes(theme.textTheme, secondaryLabelColor);
         break;
     }
     // return Container(color: Colors.black, child: Text("1111"));
@@ -1414,7 +1415,7 @@ class _TimePickerInputState extends State<_TimePickerInput> {
     final ThemeData theme = Theme.of(context);
     final TextStyle? hourMinuteStyle =
         TimePickerTheme.of(context).hourMinuteTextStyle ??
-            theme.textTheme.headline2;
+            theme.textTheme.displayMedium;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -1459,7 +1460,7 @@ class _TimePickerInputState extends State<_TimePickerInput> {
                     ExcludeSemantics(
                       child: Text(
                         MaterialLocalizations.of(context).timePickerHourLabel,
-                        style: theme.textTheme.caption,
+                        style: theme.textTheme.bodySmall,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -1488,7 +1489,7 @@ class _TimePickerInputState extends State<_TimePickerInput> {
                     ExcludeSemantics(
                       child: Text(
                         MaterialLocalizations.of(context).timePickerMinuteLabel,
-                        style: theme.textTheme.caption,
+                        style: theme.textTheme.bodySmall,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -1510,7 +1511,7 @@ class _TimePickerInputState extends State<_TimePickerInput> {
           if (hourHasError || minuteHasError)
             Text(
               MaterialLocalizations.of(context).invalidTimeLabel,
-              style: theme.textTheme.bodyText2!
+              style: theme.textTheme.bodyMedium!
                   .copyWith(color: theme.colorScheme.error),
             )
           else
