@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
       ),
       builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child),
+          child: child ?? SizedBox.shrink()),
       home: Builder(
         builder: (BuildContext context) {
           return Scaffold(
@@ -53,8 +53,8 @@ class _MyAppState extends State<MyApp> {
                           hour: _endTime.hour, minute: _endTime.minute),
                       onSubmitted: (TimeRangeValue value) {
                         setState(() {
-                          _startTime = value.startTime;
-                          _endTime = value.endTime;
+                          _startTime = value.startTime!;
+                          _endTime = value.endTime!;
                         });
                       },
                     ),
@@ -79,7 +79,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   String _timeFormated(TimeOfDay time) {
-    if (time == null) return "--:--";
     return "${time.hour}:${time.minute}";
   }
 }
